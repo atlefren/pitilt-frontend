@@ -1,0 +1,32 @@
+{
+  "// docs, basically" : "https://github.com/paulirish/sublime-jsfmt#formatting-rules",
+  "plugins": [
+        "esformatter-quotes",
+        "esformatter-semicolons",
+        "esformatter-braces",
+        "esformatter-remove-trailing-commas"
+    ],
+    "quotes": {
+        "type": "single",
+        "avoidEscape": false
+    },
+    "indent": {
+        "value": "    "  // four spaces, b.
+    },
+     "whiteSpace" : {
+         "before" : {
+             "FunctionName" : 1,
+             "FunctionExpressionOpeningBrace" : 1,
+             "FunctionExpressionClosingBrace" : 1,
+             "ModuleSpecifierClosingBrace": 0
+         },
+         "after" : {
+            "ModuleSpecifierOpeningBrace": 0,
+             "FunctionReservedWord": 1,
+             "FunctionName" : 0,
+             "FunctionExpressionOpeningBrace" : 1,
+             "FunctionExpressionClosingBrace" : 1
+         }
+     }
+ 
+}

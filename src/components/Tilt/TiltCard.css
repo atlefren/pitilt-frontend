@@ -1,0 +1,109 @@
+.tilt-cards .card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 100%;
+    min-height: 200px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    float: left;
+    color: #ddd;
+    position: relative;
+    cursor: pointer;
+}
+
+
+@media (min-width: 768px) {
+  .tilt-cards .card {
+    width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .tilt-cards .card {
+    width: 45%;
+  }
+}
+@media (min-width: 1200px) {
+  .tilt-cards .card {
+    width: 32%;
+  }
+}
+
+.tilt-cards .card.active {
+    color: #000;
+}
+
+
+.tilt-cards .card .container {
+    padding: 2px 16px;
+}
+
+
+
+
+.tilt-cards .card::before,
+.tilt-cards .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.tilt-cards .card::before {
+    border-width: 1.5em;
+}
+
+.tilt-cards .card.Black::before {
+    border-right-color: #000;
+    border-top-color: #000;
+}
+
+.tilt-cards .card.Red::before {
+    border-right-color: #f00;
+    border-top-color: #f00;
+}
+
+.tilt-cards .card.Green::before {
+    border-right-color: #0f0;
+    border-top-color: #0f0;
+}
+
+.tilt-cards .card.Blue::before {
+    border-right-color: #00f;
+    border-top-color: #00f;
+}
+
+.tilt-cards .card.Orange::before {
+    border-right-color: #d95f0e;
+    border-top-color: #d95f0e;
+}
+
+.tilt-cards .card.Purple::before {
+    border-right-color: #c51b8a;
+    border-top-color: #c51b8a;
+}
+
+.tilt-cards .card.Yellow::before {
+    border-right-color: #ffeda0;
+    border-top-color: #ffeda0;
+}
+
+.tilt-cards .card.Pink::before {
+    border-right-color: #dd1c77;
+    border-top-color: #dd1c77;
+}
+
+
+#box::after {
+    border-radius: 0.4em;
+    border-width: 1.35em;
+    border-right-color: #0c0;
+    border-top-color: #0c0;
+}
+
+
+.tilt-cards .card .header {
+    font-size: 20px;
+    font-weight: bold;
+}
