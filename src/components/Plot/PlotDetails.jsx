@@ -180,7 +180,14 @@ var PlotDetail = React.createClass({
 
     render: function () {
         if (this.state.isLoading) {
-            return <span>Loading</span>;
+            return (
+                <span>Loading</span>
+            );
+        }
+        if (!this.state.plot) {
+            return (
+                <span>Not found</span>
+            );
         }
         return (
             <div>
@@ -193,4 +200,11 @@ var PlotDetail = React.createClass({
     }
 });
 
-export default PlotDetail;
+export default function PlotDetailContainer (props) {
+    if (props.match.params.plotId === 'new') {
+      return null;
+    }
+    return (
+      <PlotDetail {...props} />
+    );
+}

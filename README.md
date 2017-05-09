@@ -7,8 +7,8 @@ Setup
 -----
 
 1. npm install
-2. cp src/config.js_tmpl src/config.js
-3. edit src/config.js
+2. cp .env_tmpl .env
+3. edit .env
 
 Dev run
 -------
