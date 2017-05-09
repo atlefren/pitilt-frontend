@@ -2,10 +2,25 @@
   "// docs, basically" : "https://github.com/paulirish/sublime-jsfmt#formatting-rules",
   "plugins": [
         "esformatter-quotes",
-        "esformatter-semicolons",
+        //"esformatter-semicolons",
         "esformatter-braces",
-        "esformatter-remove-trailing-commas"
+        "esformatter-remove-trailing-commas",
+        "esformatter-jsx"
     ],
+    "jsx": {
+      "formatJSX": true,
+      // change these to your preferred values
+      // refer to https://github.com/royriojas/esformatter-jsx#best-configuration for more options
+      "attrsOnSameLineAsTag": false, 
+      "maxAttrsOnTag": 1,
+      "firstAttributeOnSameLine": true,
+      "alignWithFirstAttribute": true,
+      "htmlOptions": {
+        "indent_char": " ",
+        "indent_size": 4
+      }
+
+    },
     "quotes": {
         "type": "single",
         "avoidEscape": false

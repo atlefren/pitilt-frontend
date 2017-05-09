@@ -1,12 +1,16 @@
 import React from 'react';
 import * as firebase from 'firebase';
 import AppNavbar from './AppNavbar';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+
+import PrivateRoute from '../PrivateRoute';
+import PlotList from '../Plot';
 
 var provider = new firebase.auth.GoogleAuthProvider();
 
-import TiltList from '../Tilt';
-
-
+function FrontPage() {
+    return <h1>Front page</h1>;
+}
 
 var App = React.createClass({
 
@@ -17,10 +21,16 @@ var App = React.createClass({
     },
 
     componentDidMount: function () {
+        this.setState({
+            isLoggedIn: !!firebase.auth().currentUser
+        });
         firebase.auth().onAuthStateChanged(function (user) {
             this.setState({
                 isLoggedIn: !!user
             });
+            if (!user) {
+                //TODO: redirect to frontpage
+            }
         }.bind(this));
     },
 
@@ -33,23 +43,24 @@ var App = React.createClass({
     },
 
     render: function () {
-        var content;
-        if (this.state.isLoggedIn) {
-            content = <TiltList />;
-        }
 
         var user = firebase.auth().currentUser;
         return (
-            <div >
-                <AppNavbar
-            user={user}
-            logIn={this.logIn}
-            logOut={this.logOut}
-            isLoggedIn={this.state.isLoggedIn}/>
-                <div className='container'>
-                {content}
+            <Router>
+                <div>
+                    <AppNavbar user={ user }
+                               logIn={ this.logIn }
+                               logOut={ this.logOut }
+                               isLoggedIn={ this.state.isLoggedIn } />
+                    <div className='container'>
+                        <Route exact
+                               path='/'
+                               component={ FrontPage } />
+                        <PrivateRoute path='/plots'
+                                      component={ PlotList } />
+                    </div>
                 </div>
-            </div>
+            </Router>
         );
     }
 });

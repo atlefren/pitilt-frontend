@@ -1,6 +1,7 @@
 import * as firebase from 'firebase';
 import reqwest from 'reqwest';
 
+
 var BASE_URL = 'http://10.0.0.36:8080';
 
 function sendRequest(method, url, data, cb) {
@@ -32,60 +33,21 @@ function getLatest(color, cb) {
     sendRequest('GET', '/data/latest/' + color, null, cb);
 }
 
-function getColors(cb) {
-    cb(null, [
-        {
-            id: 'Black',
-            name: 'Black',
-            gravity: null,
-            temp: null,
-            active: false
-        },
-        {
-            id: 'Orange',
-            name: 'Orange',
-            active: false
-        },
-        {
-            id: 'Green',
-            name: 'Green',
-            gravity: 1080,
-            temp: 18.2,
-            active: true,
-            updated: '2017-03-20T15:31:16.182000'
-        },
-        {
-            id: 'Blue',
-            name: 'Blue',
-            active: false
-        },
-        {
-            id: 'Purple',
-            name: 'Purple',
-            active: false
-        },
-        {
-            id: 'Red',
-            name: 'Red',
-            gravity: 1200,
-            temp: 20.2,
-            active: true,
-            updated: '2017-03-20T15:38:16.182000'
-        },
-        {
-            id: 'Yellow',
-            name: 'Yellow',
-            active: false
-        },
-        {
-            id: 'Pink',
-            name: 'Pink',
-            active: false
-        }
+function getAllDataForPlot(plotId, cb) {
+    sendRequest('GET', `/plots/${plotId}/data/all/`, null, cb);
+}
 
+function getHourlyDataForPlot(plotId, cb) {
+    sendRequest('GET', `/plots/${plotId}/data/hourly/`, null, cb);
+}
 
-    ]);
+function getPlot(plotId, cb) {
+    sendRequest('GET', `/plots/${plotId}`, null, cb);
+}
+
+function getPlots(cb) {
+    sendRequest('GET', '/plots/', null, cb);
 }
 
 
-export {getColors, getLatest};
+export {getPlots, getLatest, getAllDataForPlot, getHourlyDataForPlot, getPlot};
