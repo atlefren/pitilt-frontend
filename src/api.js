@@ -2,7 +2,7 @@ import * as firebase from 'firebase';
 import reqwest from 'reqwest';
 
 
-var BASE_URL = 'http://10.0.0.36:8080';
+var BASE_URL = process.env.REACT_APP_API_BASE;
 
 function sendRequest(method, url, data, cb) {
     firebase.auth().currentUser.getToken(false).then(function (idToken) {
