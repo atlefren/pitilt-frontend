@@ -6,7 +6,8 @@ var BASE_URL = process.env.REACT_APP_API_BASE;
 
 function sendRequest(method, url, data, cb) {
     firebase.auth().currentUser.getToken(false).then(function (idToken) {
-        reqwest({
+
+        var props = {
             url: BASE_URL + url,
             crossOrigin: true,
             type: 'json',
@@ -21,7 +22,12 @@ function sendRequest(method, url, data, cb) {
             success: function (resp) {
                 cb(null, resp);
             }
-        });
+        };
+        if (data !== null) {
+            props.data = JSON.stringify(data);
+        }
+        console.log(props);
+        reqwest(props);
 
     }).catch(function (err) {
         cb(err);
@@ -49,5 +55,9 @@ function getPlots(cb) {
     sendRequest('GET', '/plots/', null, cb);
 }
 
+function addPlot(data, cb) {
+    sendRequest('POST', '/plots/', data, cb);
+}
 
-export {getPlots, getLatest, getAllDataForPlot, getHourlyDataForPlot, getPlot};
+
+export {getPlots, getLatest, getAllDataForPlot, getHourlyDataForPlot, getPlot, addPlot};
