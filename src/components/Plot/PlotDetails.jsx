@@ -136,8 +136,6 @@ var Graph = React.createClass({
                      verticalAlign='top' />)
         ].concat(getAxes(this.props.instruments));
 
-        console.log(chartComponents)
-
         return <div>
                    <ResponsiveContainer width={ '100%' }
                                         height={ 500 }>
@@ -163,7 +161,6 @@ var PlotDetail = React.createClass({
     componentDidMount: function () {
         getPlot(this.props.match.params.plotId, function (err, plot) {
             if (!err) {
-                console.log(plot);
                 this.setState({
                     plot: plot,
                     isLoading: false

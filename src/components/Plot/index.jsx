@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 
 import PlotList from './PlotList';
-import PlotDetail2 from './PlotDetail2';
+import PlotDetail2 from './PlotDetail2/index';
 import CreatePlot from './CreatePlot';
 
 export default function (props) {

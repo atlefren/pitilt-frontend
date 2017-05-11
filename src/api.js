@@ -26,7 +26,6 @@ function sendRequest(method, url, data, cb) {
         if (data !== null) {
             props.data = JSON.stringify(data);
         }
-        console.log(props);
         reqwest(props);
 
     }).catch(function (err) {
