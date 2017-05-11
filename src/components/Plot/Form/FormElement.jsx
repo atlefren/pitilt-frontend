@@ -22,19 +22,21 @@ export default function FormElement(props) {
         );
     }
     return (
+        
         <FormGroup
             validationState={props.hasError ? 'error': null}
             controlId={props.element.key}>
-            <Col xs={6} md={2}>
+            <Col md={4}>
                 <ControlLabel htmlFor={props.element.key}>
                     {props.element.title}
                 </ControlLabel>
             </Col>
-            <Col xs={6} md={8}>
+            <Col md={8}>
                 <CustomInput {...props} />
                 {helpBlock}
             </Col>
         </FormGroup>
+       
     );
 }
 
