@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormControl, FormGroup, ControlLabel, Col, HelpBlock} from 'react-bootstrap';
+import {FormGroup, ControlLabel, Col, HelpBlock} from 'react-bootstrap';
 
 import Input from './Input';
 import DateTime from './DateTime';

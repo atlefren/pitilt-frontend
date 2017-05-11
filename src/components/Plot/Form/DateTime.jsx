@@ -5,9 +5,8 @@ import 'react-datetime/css/react-datetime.css';
 
 export default function DateTime(props) {
 
-    var onChange = function (e) {
-        
-        console.log(e);
+    var onChange = function (value) {
+        props.onChange(props.element.key, value);
     };
 
     return (

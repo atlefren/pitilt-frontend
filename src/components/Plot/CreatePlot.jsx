@@ -8,7 +8,7 @@ import {addPlot} from '../../api';
 
 const formatters = {
     datetime: function (value) {
-        return value !== null ? value.toISOString() : null;
+        return value !== null && value != '' ? moment(value).format("YYYY-MM-DDTHH:mm:ssZ") : null;
     }
 }
 
@@ -33,14 +33,14 @@ const elements = [
         error: 'Set a non-blank name'
     },
     {
-        key: 'start_time', 
+        key: 'startTime', 
         title: 'Starts at',
         type: 'datetime',
         required: true,
         error: 'Set the start-time'
     },
     {
-        key: 'end_time', 
+        key: 'endTime', 
         title: 'Ends at', 
         type: 'datetime'
     },
@@ -73,7 +73,7 @@ class CreatePlot extends React.Component {
         this._saved = this._saved.bind(this);
         this.state = {
             saving: false,
-            plot: {name: null, start_time: moment().startOf('hour'), end_time: null, instruments: []},
+            plot: {name: null, startTime: moment().startOf('hour'), endTime: null, instruments: []},
             errors: []
         }
     }
@@ -113,7 +113,7 @@ class CreatePlot extends React.Component {
     _onSubmit(e) {
         e.preventDefault();
         var errors = validate(elements, this.state.plot);
-        console.log(errors)
+
         this.setState({errors: errors});
         if (errors.length === 0) {
            //this.setState({saving: true});
@@ -133,7 +133,7 @@ class CreatePlot extends React.Component {
     }
 
     _saved(err, resp) {
-        console.log(err, resp);
+        console.log("saved", err, resp);
     }
 
 };
