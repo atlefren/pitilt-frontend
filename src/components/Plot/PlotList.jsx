@@ -39,7 +39,7 @@ var PlotList = React.createClass({
             );
         }
         return (
-            <div className='plot-cards'>
+            <div className='plot-cards clearfix'>
                     {
                     _.chain(this.state.plots)
                         .sortBy(function (item) {
@@ -63,6 +63,7 @@ export default function PlotListContainer(props) {
     return (
         <div>
             <PlotList {...props} />
+            <hr />
             <div>
                 <Link className="btn btn-primary" to={ `/plots/new` }>Create New Plot</Link>
             </div>
