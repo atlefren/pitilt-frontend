@@ -200,11 +200,4 @@ var PlotDetail = React.createClass({
     }
 });
 
-export default function PlotDetailContainer (props) {
-    if (props.match.params.plotId === 'new') {
-      return null;
-    }
-    return (
-      <PlotDetail {...props} />
-    );
-}
+export default PlotDetail;
