@@ -4,11 +4,11 @@ import moment from 'moment';
 import {Form, Button} from 'react-bootstrap';
 
 import FormElement from './Form/FormElement';
-import {addPlot} from '../../api';
+import {addPlot, getInstrumentTypes} from '../../api';
 
 const formatters = {
     datetime: function (value) {
-        return value !== null && value != '' ? moment(value).format("YYYY-MM-DDTHH:mm:ssZ") : null;
+        return value !== null && value !== '' ? moment(value).format("YYYY-MM-DDTHH:mm:ssZ") : null;
     }
 }
 
@@ -71,14 +71,28 @@ class CreatePlot extends React.Component {
         this._onChange = this._onChange.bind(this);
         this._onSubmit = this._onSubmit.bind(this);
         this._saved = this._saved.bind(this);
+        this._gotData = this._gotData.bind(this);
         this.state = {
+            loading: true,
             saving: false,
             plot: {name: null, startTime: moment().startOf('hour'), endTime: null, instruments: []},
             errors: []
         }
     }
 
-    render() { 
+    componentDidMount() {
+        getInstrumentTypes(function(err, instruments){
+            if (!err) {
+                this._gotData({instruments: instruments});
+            }
+        }.bind(this));
+    }
+
+    render() {
+        if (this.state.loading) {
+            return <span>Loading</span>;
+        }
+
         return (
             <Form horizontal onSubmit={this._onSubmit}>
              <fieldset>
@@ -88,6 +102,7 @@ class CreatePlot extends React.Component {
                     <FormElement
                         element={element}
                         key={element.key}
+                        data={this.state.componentData[element.key]}
                         hasError={this.state.errors.includes(element.key)}
                         onChange={this._onChange}
                         value={this.state.plot[element.key]} />
@@ -116,8 +131,8 @@ class CreatePlot extends React.Component {
 
         this.setState({errors: errors});
         if (errors.length === 0) {
-           //this.setState({saving: true});
-        this._save();
+            this.setState({saving: true});
+            this._save();
         }
     }
 
@@ -134,6 +149,13 @@ class CreatePlot extends React.Component {
 
     _saved(err, resp) {
         console.log("saved", err, resp);
+    }
+
+    _gotData(data) {
+        this.setState({
+            loading: false,
+            componentData: data
+        });
     }
 
 };

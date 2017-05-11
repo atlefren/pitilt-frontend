@@ -1,5 +1,5 @@
 import React from 'react';
-import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {LineChart, /*Line,*/ XAxis, /*YAxis,*/ CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import moment from 'moment';
 import _ from 'lodash';
 
@@ -68,7 +68,7 @@ function formatData(measurements) {
 
 function getAxes(instruments) {
     return [];
-    return _.flatten(_.map(instruments, function (instrument) {
+    /*return _.flatten(_.map(instruments, function (instrument) {
         return [
             (<YAxis yAxisId='left'
                     domain={ [1000, 'dataMax+10'] }
@@ -82,7 +82,7 @@ function getAxes(instruments) {
                    stroke='#8884d8' />)
         ]
     }));
-
+    */
 }
 
 

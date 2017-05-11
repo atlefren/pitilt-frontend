@@ -20,10 +20,16 @@ function Instrument(props) {
         props.onRemove(props.instrument);
     };
 
+    var instrumentType = _.find(
+        props.instrumentTypes,
+        instrumentType => instrumentType.key === props.instrument.type
+    );
+
     return (
         <tr>
+            <td>{props.instrument.key}</td>
             <td>{props.instrument.name}</td>
-            <td>{props.instrument.type}</td>
+            <td>{instrumentType.name}</td>
             <td>
                 <Button bsSize="small" 
                     bsStyle="warning" 
@@ -43,7 +49,8 @@ class InstrumentAdd extends React.Component {
         this._add = this._add.bind(this);
         this.state = {
             name: '',
-            type: ''
+            type: '',
+            key: ''
         };
     }
 
@@ -54,6 +61,12 @@ class InstrumentAdd extends React.Component {
             <tr>
                 <td>
                     <FormControl
+                        onChange={_.partial(this._onChange, 'key')}
+                        value={this.state.key}
+                        type='text'/>
+                </td>
+                <td>
+                    <FormControl
                         onChange={_.partial(this._onChange, 'name')}
                         value={this.state.name}
                         type='text'/>
@@ -61,8 +74,16 @@ class InstrumentAdd extends React.Component {
                 <td>
                     <FormControl
                         onChange={_.partial(this._onChange, 'type')}
+                        componentClass="select"
                         value={this.state.type}
-                        type='text'/>
+                        placeholder="select type">
+                        <option value="">...</option>
+                        {this.props.instrumentTypes.map(instrumentType => 
+                            <option value={instrumentType.key} key={instrumentType.key}>
+                                {instrumentType.name}
+                            </option>
+                        )}
+                    </FormControl>
                 </td>
                 <td>
                     <Button bsSize="small" 
@@ -82,12 +103,14 @@ class InstrumentAdd extends React.Component {
 
     _add() {
         this.props.onAdd(_.clone(this.state));
-        this.setState({name: '', type: ''});
+        this.setState({name: '', type: '', key: ''});
     }
 };
 
 
 export default function Instruments(props) {
+
+    var instrumentTypes = props.data;
 
     function onAdd(instrument) {
         var value = _.clone(props.value);
@@ -103,6 +126,7 @@ export default function Instruments(props) {
     const rows = props.value.map(instrument => 
         <Instrument instrument={stamp(instrument)}
             onRemove={onRemove}
+            instrumentTypes={instrumentTypes}
             key={stamp(instrument)._key} />
     );
 
@@ -110,6 +134,7 @@ export default function Instruments(props) {
         <Table>
             <thead>
                 <tr>
+                    <th>Key</th>
                     <th>Name</th>
                     <th>Type</th>
                     <th></th>
@@ -117,7 +142,7 @@ export default function Instruments(props) {
             </thead>
             <tbody>
                 {rows}
-                <InstrumentAdd onAdd={onAdd}/>
+                <InstrumentAdd onAdd={onAdd} instrumentTypes={instrumentTypes}/>
             </tbody>
         </Table>
     );  

@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 
 import PlotList from './PlotList';
-import PlotDetails from './PlotDetails';
+import PlotDetail2 from './PlotDetail2';
 import CreatePlot from './CreatePlot';
 
 export default function (props) {
@@ -13,7 +13,7 @@ export default function (props) {
               <Route path={ `${match.url}/new` }
                      component={ CreatePlot } />
               <Route path={ `${match.url}/:plotId` }
-                     component={ PlotDetails } />
+                     component={ PlotDetail2 } />
             </Switch>
             <Route exact
                    path={ match.url }

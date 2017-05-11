@@ -59,5 +59,21 @@ function addPlot(data, cb) {
     sendRequest('POST', '/plots/', data, cb);
 }
 
+function getInstrumentTypes(cb) {
+    cb(null, [
+        {'key': 'degC', 'name': 'Degrees Celcius', 'symbol': '°C'},
+        {'key': 'degF', 'name': 'Degrees Farenheit', 'symbol': '°F'},
+        {'key': 'gravity', 'name': 'Gravity', 'symbol': ''}
+    ]);
+}
 
-export {getPlots, getLatest, getAllDataForPlot, getHourlyDataForPlot, getPlot, addPlot};
+
+export {
+    getPlots,
+    getPlot,
+    addPlot,
+    getLatest,
+    getAllDataForPlot,
+    getHourlyDataForPlot,
+    getInstrumentTypes
+};
