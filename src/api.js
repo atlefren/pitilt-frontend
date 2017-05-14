@@ -58,6 +58,10 @@ function addPlot(data, cb) {
     sendRequest('POST', '/plots/', data, cb);
 }
 
+function getKey(cb) {
+    sendRequest('GET', '/user/key/', null, cb);
+}
+
 function getInstrumentTypes(cb) {
     cb(null, [
         {'key': 'degC', 'name': 'Degrees Celcius', 'symbol': '°C'},
@@ -74,5 +78,6 @@ export {
     getLatest,
     getAllDataForPlot,
     getHourlyDataForPlot,
-    getInstrumentTypes
+    getInstrumentTypes,
+    getKey
 };

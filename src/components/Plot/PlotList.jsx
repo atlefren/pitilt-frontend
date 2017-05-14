@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 import {getPlots} from '../../api';
 import PlotCard from './PlotCard';
-
+import Spinner from '../../helpers/Spinner';
 
 
 var PlotList = React.createClass({
@@ -29,7 +29,7 @@ var PlotList = React.createClass({
     render: function () {
         if (this.state.plots === null) {
             return (
-                <span>Waiting</span>
+                <Spinner />
             );
 
         }

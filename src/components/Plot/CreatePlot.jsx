@@ -5,6 +5,7 @@ import {Form, Button} from 'react-bootstrap';
 
 import FormElement from './Form/FormElement';
 import {addPlot, getInstrumentTypes} from '../../api';
+import Spinner from '../../helpers/Spinner';
 
 const formatters = {
     datetime: function (value) {
@@ -90,7 +91,7 @@ class CreatePlot extends React.Component {
 
     render() {
         if (this.state.loading) {
-            return <span>Loading</span>;
+            return <Spinner />;
         }
 
         return (

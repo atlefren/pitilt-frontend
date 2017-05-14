@@ -1,9 +1,7 @@
 import React from 'react';
 import {getAllDataForPlot, getPlot, getInstrumentTypes} from '../../../api';
 import MeasurementList from './MeasurementList';
-
-
-
+import Spinner from '../../../helpers/Spinner';
 
 
 class PlotDetail2 extends React.Component {
@@ -49,7 +47,7 @@ class PlotDetail2 extends React.Component {
 
     render() {
         if (this.state.numWaiting > 0) {
-            return <span>loading</span>
+            return <Spinner/>
         }
         return (
             <div>
