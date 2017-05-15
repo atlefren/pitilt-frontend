@@ -34,8 +34,8 @@ function sendRequest(method, url, data, cb) {
 }
 
 
-function getLatest(color, cb) {
-    sendRequest('GET', '/data/latest/' + color, null, cb);
+function getLatest(plotId, cb) {
+    sendRequest('GET', `/plots/${plotId}/data/latest/`, null, cb);
 }
 
 function getAllDataForPlot(plotId, cb) {

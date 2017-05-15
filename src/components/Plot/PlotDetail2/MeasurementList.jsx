@@ -27,9 +27,6 @@ function DataRow(props) {
 
 
 class MeasurementList extends React.Component {
-    constructor() {
-        super();
-    }
 
     render() {
         var headers = this.props.plot.instruments.map(
