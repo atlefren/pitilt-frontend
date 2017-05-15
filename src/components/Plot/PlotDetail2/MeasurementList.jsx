@@ -29,6 +29,12 @@ function DataRow(props) {
 class MeasurementList extends React.Component {
 
     render() {
+        if (!this.props.measurements.length) {
+            return (
+                <p>No measurements</p>
+            );
+        }
+
         var headers = this.props.plot.instruments.map(
             instrument => 
             <th key={instrument.key}>{instrument.name}</th>

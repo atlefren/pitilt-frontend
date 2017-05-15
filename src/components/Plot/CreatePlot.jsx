@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import {Form, Button} from 'react-bootstrap';
+import {Redirect} from 'react-router-dom'
 
 import FormElement from './Form/FormElement';
 import {addPlot, getInstrumentTypes} from '../../api';
@@ -90,6 +91,12 @@ class CreatePlot extends React.Component {
     }
 
     render() {
+
+        if (this.state.savedPlot) {
+            console.log(this.state.savedPlot);
+            return <Redirect to={`/plots/${this.state.savedPlot.id}`} />
+        }
+
         if (this.state.loading) {
             return <Spinner />;
         }
@@ -149,7 +156,7 @@ class CreatePlot extends React.Component {
     }
 
     _saved(err, resp) {
-        console.log("saved", err, resp);
+        this.setState({savedPlot: resp});
     }
 
     _gotData(data) {
