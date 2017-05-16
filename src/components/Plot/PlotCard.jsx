@@ -1,33 +1,15 @@
 import React from 'react';
-import {formatTemp, formatGravity} from '../../util';
 import _ from 'lodash';
-import moment from 'moment';
+
 import {Link} from 'react-router-dom';
+
 
 import {getLatest} from '../../api';
 import './PlotCard.css';
+import dl from '../../helpers/dl';
+import formatDate from '../../helpers/formatDate';
 
 
-function dl(dt, dd) {
-    return (
-        <dl key={ dt } className="dl-horizontal">
-            <dt>{ dt }</dt>
-            <dd>
-                { dd }
-            </dd>
-        </dl>
-    );
-}
-
-
-var renderers = {
-    temperature_celsius: function (data) {
-        return dl('Temperature', formatTemp(data, 'c'));
-    },
-    gravity: function (data) {
-        return dl('Specific Gravity', formatGravity(data));
-    }
-};
 
 class LastMeasurements extends React.Component{
 
@@ -56,7 +38,7 @@ class LastMeasurements extends React.Component{
         var measurements = _.map(this.state.lastMeasurement.values, (value, key) => dl(key, value));
         return (
             <div>
-                <p>Last measurement: {moment(this.state.lastMeasurement.date).format('DD.MM.YYYY [kl.] HH:mm:ss')}</p>
+                <p>Last measurement: {formatDate(this.state.lastMeasurement.date, 'DD.MM.YYYY [kl.] HH:mm:ss')}</p>
                 <div>{measurements}</div>
             </div>
         );
@@ -77,7 +59,7 @@ function Content(props) {
     }
     return (
         <div>
-            <p>Started: {moment(props.plot.startTime).format('DD.MM.YYYY [kl.] HH:mm:ss')}</p>
+            <p>Started: {formatDate(props.plot.startTime, 'DD.MM.YYYY [kl.] HH:mm:ss')}</p>
         </div>
     );
 }

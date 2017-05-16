@@ -1,11 +1,10 @@
 import React from 'react';
 import {Table} from 'react-bootstrap';
 import _ from 'lodash';
-import moment from 'moment';
 
-function formatDate(d) {
-    return moment(d).format('DD.MM HH:mm:ss');
-}
+import Spinner from '../../../helpers/Spinner';
+import formatDate from '../../../helpers/formatDate';
+
 
 function DataRow(props) {
 
@@ -30,9 +29,7 @@ class MeasurementList extends React.Component {
 
     render() {
         if (!this.props.measurements.length) {
-            return (
-                <p>No measurements</p>
-            );
+            return <Spinner />;
         }
 
         var headers = this.props.plot.instruments.map(

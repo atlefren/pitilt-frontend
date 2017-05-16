@@ -63,11 +63,19 @@ function getKey(cb) {
 }
 
 function getInstrumentTypes(cb) {
+    //TODO: get from server
     cb(null, [
         {'key': 'degC', 'name': 'Degrees Celcius', 'symbol': '°C'},
         {'key': 'degF', 'name': 'Degrees Farenheit', 'symbol': '°F'},
         {'key': 'gravity', 'name': 'Gravity', 'symbol': ''}
     ]);
+}
+
+function getMeasurementsSince(plotId, since, cb) {
+    //TODO: get from correct server method
+    getLatest(plotId, function (err, data) {
+        cb(err, [data]);
+    });
 }
 
 
@@ -79,5 +87,6 @@ export {
     getAllDataForPlot,
     getHourlyDataForPlot,
     getInstrumentTypes,
-    getKey
+    getKey,
+    getMeasurementsSince
 };
