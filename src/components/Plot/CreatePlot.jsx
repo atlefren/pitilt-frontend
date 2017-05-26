@@ -65,6 +65,7 @@ function validate(elements, data) {
         .value();
 }
 
+
 class CreatePlot extends React.Component {
 
     constructor() {
@@ -93,7 +94,6 @@ class CreatePlot extends React.Component {
     render() {
 
         if (this.state.savedPlot) {
-            console.log(this.state.savedPlot);
             return <Redirect to={`/plots/${this.state.savedPlot.id}`} />
         }
 

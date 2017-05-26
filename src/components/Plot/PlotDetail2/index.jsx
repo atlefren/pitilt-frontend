@@ -1,8 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
+import {Nav, NavItem} from 'react-bootstrap';
 
 import {getAllDataForPlot, getPlot, getInstrumentTypes, getMeasurementsSince, getLatest} from '../../../api';
 import MeasurementList from './MeasurementList';
+import MeasurementGraph from './MeasurementGraph';
 import Spinner from '../../../helpers/Spinner';
 import dl from '../../../helpers/dl';
 import formatDate from '../../../helpers/formatDate';
@@ -32,15 +34,29 @@ function mergeData(measurement, instruments, instrumentTypes) {
     });
 }
 
+
+function ViewChooser(props) {
+    return (
+        <Nav bsStyle="tabs" activeKey={props.selectedView} onSelect={props.handleSelect}>
+            <NavItem eventKey="graph">Graph</NavItem>
+            <NavItem eventKey="list">List</NavItem>
+        </Nav>
+    );
+}
+
+
 class PlotDetail2 extends React.Component {
 
     constructor() {
         super();
         this._getLatest = this._getLatest.bind(this);
+        this._changeView = this._changeView.bind(this);
         this.state = {
             numWaiting: 3,
             measurements: [],
-            lastMeasurement: null
+            lastMeasurement: null,
+            noMeasurements: false,
+            selectedView: 'graph'
         }
     }
 
@@ -53,12 +69,15 @@ class PlotDetail2 extends React.Component {
         this.setState({numWaiting: 3});
 
         getLatest(plotId, function(err, data){
-            if (!err) {
-                this.setState({
-                    numWaiting: this.state.numWaiting - 1,
-                    lastMeasurement: data
-                });
+
+            if (err) {
+                this.setState({noMeasurements: true});
+                return;
             }
+            this.setState({
+                numWaiting: this.state.numWaiting - 1,
+                lastMeasurement: data
+            });
         }.bind(this));
 
         getInstrumentTypes(function(err, data){
@@ -103,23 +122,53 @@ class PlotDetail2 extends React.Component {
     }
 
     render() {
-        if (this.state.numWaiting > 0) {
-            return <Spinner/>
+        if (this.state.noMeasurements) {
+            return (
+                <p>No measurements</p>
+            );
         }
+        if (this.state.numWaiting > 0) {
+            return (
+                <Spinner/>
+            );
+        }
+
+        var view; 
+        if (this.state.selectedView === 'graph') {
+            view = (
+                <MeasurementGraph
+                        measurements={this.state.measurements}
+                        instrumentTypes={this.state.instrumentTypes}
+                        plot={this.state.plot} />
+            );
+        }
+        if (this.state.selectedView === 'list') {
+            view = (
+                <MeasurementList
+                    measurements={this.state.measurements}
+                    instrumentTypes={this.state.instrumentTypes}
+                    plot={this.state.plot} />
+            );
+        }
+
         var last = mergeData(this.state.lastMeasurement, this.state.plot.instruments, this.state.instrumentTypes)
         return (
             <div>
                 <h2>{this.state.plot.name}</h2>
                 <div>
                     {dl('Last updated', formatDate(this.state.lastMeasurement.date))}
-                    {_.map(last, (m) => dl(m.name, `${m.value}${!!m.instrumentType.symbol ? m.instrumentType.symbol : ''}`))}
+                    {_.map(last, (m) => dl(`Current ${m.name}`, `${m.value}${!!m.instrumentType.symbol ? m.instrumentType.symbol : ''}`))}
                 </div>
-                <MeasurementList
-                    measurements={this.state.measurements}
-                    instrumentTypes={this.state.instrumentTypes}
-                    plot={this.state.plot} />
+                <ViewChooser
+                    handleSelect={this._changeView}
+                    selectedView={this.state.selectedView} />
+                {view}
             </div>
         );
+    }
+
+    _changeView(view) {
+        this.setState({selectedView: view});
     }
 
 };
