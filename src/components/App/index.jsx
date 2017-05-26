@@ -13,12 +13,13 @@ function FrontPage(props) {
     var loginLink = null;
     if (!props.authed) {
         loginLink = (
-            <Link to="/login">Log in</Link>
+            <Link className="btn btn-primary btn-lg" to="/login">Log in</Link>
         );
     }
     return (
-        <div>
-            <h1>Pitilt</h1>
+        <div className="jumbotron">
+            <h1>plot.beer</h1>
+            <p>Plot.beer lets you plot measurements from your brewing process. Pipe in measuremnsts from sources such as your <a href="https://tilthydrometer.com/products/brewometer">Tilt Brewometer</a> or any sensor connected to a Rasberry Pi.</p>
             {loginLink}
         </div>
     );
