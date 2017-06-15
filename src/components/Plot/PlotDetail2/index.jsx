@@ -12,8 +12,6 @@ import formatDate from '../../../helpers/formatDate';
 import MeasurementLoader from './MeasurementLoader';
 
 
-
-
 function mergeData(measurement, instruments, instrumentTypes) {
     return _.map(instruments, function (instrument) {
         const instrumentType = _.find(instrumentTypes, it => it.key === instrument.type);
@@ -109,18 +107,7 @@ class PlotDetail2 extends React.Component {
             }
         }.bind(this));
 
-        /*
-        getAllDataForPlot(plotId, function(err, data){
-            if (!err) {
-                this.setState({
-                    //we do not wait for this..
-                    measurements: data.sort(sortMeasurements)
-                });
-            }
-        }.bind(this));
-        */
-
-        //this.interval = setInterval(this._getLatest, 10000);
+        this.interval = setInterval(this._getLatest, 10000);
     }
 
 
@@ -132,11 +119,7 @@ class PlotDetail2 extends React.Component {
             timeSpan = this.state.plot.active ? 'day' : 'all';
         }
 
-        console.log(timeSpan)
-
         var plotParams = this._getPlotParams(this.state.plot.startTime, this.state.lastMeasurement.date, timeSpan);
-        console.log(plotParams);
-
         this.setState({
             timeSpan: timeSpan,
             timeOffset: 0,
@@ -153,8 +136,8 @@ class PlotDetail2 extends React.Component {
 
         return {
             resolution: resolutions[timeSpan],
-            start: moment(start).format(),
-            end: moment(end).format()
+            start: moment(start).format("YYYY-MM-DDTHH:mm:ssZ"),
+            end: moment(end).format("YYYY-MM-DDTHH:mm:ssZ")
         };
     }
 

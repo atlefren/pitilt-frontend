@@ -43,7 +43,6 @@ function getLatest(plotId, cb) {
 
 function getAllDataForPlot(plotId, params, cb) {
     const url = `/plots/${plotId}/data/all/?${getQueryParams(params)}`;
-    console.log(url);
     sendRequest('GET', url, null, cb);
 }
 
