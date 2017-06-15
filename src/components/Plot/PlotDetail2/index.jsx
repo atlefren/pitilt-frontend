@@ -1,26 +1,17 @@
 import React from 'react';
 import _ from 'lodash';
 import {Nav, NavItem} from 'react-bootstrap';
+import moment from 'moment';
 
-import {getAllDataForPlot, getPlot, getInstrumentTypes, getMeasurementsSince, getLatest} from '../../../api';
+import {getPlot, getInstrumentTypes, getMeasurementsSince, getLatest} from '../../../api';
 import MeasurementList from './MeasurementList';
 import MeasurementGraph from './MeasurementGraph';
 import Spinner from '../../../helpers/Spinner';
 import dl from '../../../helpers/dl';
 import formatDate from '../../../helpers/formatDate';
+import MeasurementLoader from './MeasurementLoader';
 
 
-function sortMeasurements(a, b) {
-    var dateA = a.date;
-    var dateB = b.date;
-    if (dateA < dateB) {
-        return 1;
-    }
-    if (dateA > dateB) {
-        return -1;
-    }
-    return 0;
-}
 
 
 function mergeData(measurement, instruments, instrumentTypes) {
@@ -44,6 +35,22 @@ function ViewChooser(props) {
     );
 }
 
+function PeriodChooser(props) {
+    return (
+        <Nav bsStyle="pills" activeKey={props.selectedPeriod} onSelect={props.handleSelect}>
+            <NavItem eventKey="day">Last Day</NavItem>
+            <NavItem eventKey="week">Last Week</NavItem>
+            <NavItem eventKey="all">All Measurements</NavItem>
+        </Nav>
+    );
+}
+
+const resolutions = {
+    'day': 'minute',
+    'week': 'hour',
+    'all': 'day'
+}
+
 
 class PlotDetail2 extends React.Component {
 
@@ -51,6 +58,7 @@ class PlotDetail2 extends React.Component {
         super();
         this._getLatest = this._getLatest.bind(this);
         this._changeView = this._changeView.bind(this);
+        this._calculatePeriod = this._calculatePeriod.bind(this);
         this.state = {
             numWaiting: 3,
             measurements: [],
@@ -78,6 +86,8 @@ class PlotDetail2 extends React.Component {
                 numWaiting: this.state.numWaiting - 1,
                 lastMeasurement: data
             });
+            this._calculatePeriod();
+
         }.bind(this));
 
         getInstrumentTypes(function(err, data){
@@ -95,9 +105,11 @@ class PlotDetail2 extends React.Component {
                     numWaiting: this.state.numWaiting - 1,
                     plot: plot
                 });
+                this._calculatePeriod();
             }
         }.bind(this));
 
+        /*
         getAllDataForPlot(plotId, function(err, data){
             if (!err) {
                 this.setState({
@@ -106,8 +118,44 @@ class PlotDetail2 extends React.Component {
                 });
             }
         }.bind(this));
+        */
 
-        this.interval = setInterval(this._getLatest, 10000);
+        //this.interval = setInterval(this._getLatest, 10000);
+    }
+
+
+    _calculatePeriod(timeSpan) {
+        if (!this.state.plot || !this.state.lastMeasurement) {
+            return;
+        }
+        if (!timeSpan) {
+            timeSpan = this.state.plot.active ? 'day' : 'all';
+        }
+
+        console.log(timeSpan)
+
+        var plotParams = this._getPlotParams(this.state.plot.startTime, this.state.lastMeasurement.date, timeSpan);
+        console.log(plotParams);
+
+        this.setState({
+            timeSpan: timeSpan,
+            timeOffset: 0,
+            plotParams: plotParams
+        });
+    }
+
+
+    _getPlotParams(start, end, timeSpan) {
+
+        if (timeSpan !== 'all') {
+            start = moment(end).startOf(timeSpan);
+        }
+
+        return {
+            resolution: resolutions[timeSpan],
+            start: moment(start).format(),
+            end: moment(end).format()
+        };
     }
 
     _getLatest() {
@@ -127,7 +175,7 @@ class PlotDetail2 extends React.Component {
                 <p>No measurements</p>
             );
         }
-        if (this.state.numWaiting > 0) {
+        if (this.state.numWaiting > 0 || !this.state.plotParams) {
             return (
                 <Spinner/>
             );
@@ -136,18 +184,22 @@ class PlotDetail2 extends React.Component {
         var view; 
         if (this.state.selectedView === 'graph') {
             view = (
-                <MeasurementGraph
-                        measurements={this.state.measurements}
-                        instrumentTypes={this.state.instrumentTypes}
-                        plot={this.state.plot} />
+                <MeasurementLoader 
+                    instrumentTypes={this.state.instrumentTypes}
+                    plotParams={this.state.plotParams}
+                    plot={this.state.plot}>
+                    <MeasurementGraph />
+                </MeasurementLoader>
             );
         }
         if (this.state.selectedView === 'list') {
             view = (
-                <MeasurementList
-                    measurements={this.state.measurements}
+                <MeasurementLoader 
                     instrumentTypes={this.state.instrumentTypes}
-                    plot={this.state.plot} />
+                    plotParams={this.state.plotParams}
+                    plot={this.state.plot}>
+                    <MeasurementList />
+                </MeasurementLoader>
             );
         }
 
@@ -162,6 +214,9 @@ class PlotDetail2 extends React.Component {
                 <ViewChooser
                     handleSelect={this._changeView}
                     selectedView={this.state.selectedView} />
+                <PeriodChooser 
+                    handleSelect={this._calculatePeriod} 
+                    selectedPeriod={this.state.timeSpan} />
                 {view}
             </div>
         );

@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import reqwest from 'reqwest';
-
+import _ from 'lodash';
 
 var BASE_URL = process.env.REACT_APP_API_BASE;
 
@@ -33,13 +33,18 @@ function sendRequest(method, url, data, cb) {
     });
 }
 
+function getQueryParams(params) {
+    return _.map(params, (value, key) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
+}
 
 function getLatest(plotId, cb) {
     sendRequest('GET', `/plots/${plotId}/data/latest/`, null, cb);
 }
 
-function getAllDataForPlot(plotId, cb) {
-    sendRequest('GET', `/plots/${plotId}/data/all/`, null, cb);
+function getAllDataForPlot(plotId, params, cb) {
+    const url = `/plots/${plotId}/data/all/?${getQueryParams(params)}`;
+    console.log(url);
+    sendRequest('GET', url, null, cb);
 }
 
 function getHourlyDataForPlot(plotId, cb) {

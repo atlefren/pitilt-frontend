@@ -24,39 +24,44 @@ function DataRow(props) {
     )
 }
 
-
-class MeasurementList extends React.Component {
-
-    render() {
-        if (!this.props.measurements.length) {
-            return <Spinner />;
-        }
-
-        var headers = this.props.plot.instruments.map(
-            instrument => 
-            <th key={instrument.key}>{instrument.name}</th>
-        );
-
-        return (
-            <Table>
-                <thead>
-                    <tr>
-                        <th>Timestamp</th>
-                        {headers}
-                    </tr>
-                </thead>
-                <tbody>
-                {this.props.measurements.map(measurement => 
-                    <DataRow 
-                        data={measurement} 
-                        instrumentTypes={this.props.instrumentTypes}
-                        instruments={this.props.plot.instruments} 
-                        key={measurement.date}/>
-                )}
-                </tbody>
-            </Table>
-        );
+function sortMeasurements(a, b) {
+    var dateA = a.date;
+    var dateB = b.date;
+    if (dateA < dateB) {
+        return 1;
     }
-};
+    if (dateA > dateB) {
+        return -1;
+    }
+    return 0;
+}
 
-export default MeasurementList;
+
+
+export default function MeasurementList(props) {
+    var headers = props.plot.instruments.map(
+        instrument => 
+        <th key={instrument.key}>{instrument.name}</th>
+    );
+    var measurements = props.measurements.sort(sortMeasurements);
+    return (
+        <Table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    {headers}
+                </tr>
+            </thead>
+            <tbody>
+            {measurements.map(measurement => 
+                <DataRow 
+                    data={measurement} 
+                    instrumentTypes={props.instrumentTypes}
+                    instruments={props.plot.instruments} 
+                    key={measurement.date}/>
+            )}
+            </tbody>
+        </Table>
+    );
+}
+

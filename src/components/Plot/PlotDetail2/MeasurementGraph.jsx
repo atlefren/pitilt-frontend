@@ -127,9 +127,8 @@ class MeasurementGraph extends React.Component {
 
 
 function MeasurementGraphs(props) {
-    if (!props.measurements.length) {
-        return <Spinner />;
-    }
+
+    var measurements = props.measurements.sort(sortMeasurements);
     var graphs = _.map(props.plot.instruments, function (instrument) {
         if (!instrument.color) {
             instrument.color = getColor();
@@ -137,7 +136,7 @@ function MeasurementGraphs(props) {
         return (
             <div key={instrument.key} >
                 <h3>{instrument.name}</h3>
-                <MeasurementGraph instruments={[instrument]} measurements={props.measurements}/>
+                <MeasurementGraph instruments={[instrument]} measurements={measurements}/>
             </div>
         )
     });
