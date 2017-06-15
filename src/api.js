@@ -62,6 +62,10 @@ function addPlot(data, cb) {
     sendRequest('POST', '/plots/', data, cb);
 }
 
+function editPlot(data, cb) {
+    sendRequest('PUT', `/plots/${data.id}`, data, cb);
+}
+
 function getKey(cb) {
     sendRequest('GET', '/user/key/', null, cb);
 }
@@ -87,6 +91,7 @@ export {
     getPlots,
     getPlot,
     addPlot,
+    editPlot,
     getLatest,
     getAllDataForPlot,
     getHourlyDataForPlot,

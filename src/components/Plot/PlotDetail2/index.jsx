@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import {Nav, NavItem} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 import moment from 'moment';
 
 import {getPlot, getInstrumentTypes, getMeasurementsSince, getLatest} from '../../../api';
@@ -193,6 +194,9 @@ class PlotDetail2 extends React.Component {
                 <div>
                     {dl('Last updated', formatDate(this.state.lastMeasurement.date))}
                     {_.map(last, (m) => dl(`Current ${m.name}`, `${m.value}${!!m.instrumentType.symbol ? m.instrumentType.symbol : ''}`))}
+                </div>
+                <div>
+                    <Link className="btn btn-primary" to={ `/plots/${this.props.match.params.plotId}/edit` }>Edit plot</Link>
                 </div>
                 <ViewChooser
                     handleSelect={this._changeView}
