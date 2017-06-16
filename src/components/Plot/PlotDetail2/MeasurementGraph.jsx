@@ -19,6 +19,23 @@ function CustomizedAxisTick(props) {
     );
 }
 
+function CustomizedYAxisTick(props) {
+    const {x, y, payload} = props;
+    const unit = !_.isNil(props.unit) ? props.unit : '';
+    return (
+        <g transform={ `translate(${x},${y})` }>
+            <text x={ 0 }
+                  y={ 0 }
+                  dy={ 10 }
+                  dx={props.pos === 'left' ? -10: 10}
+                  textAnchor={props.pos === 'left' ? 'end': 'start'}
+                  fill='#666'>
+                {`${payload.value}${unit}`}
+            </text>
+        </g>
+    );
+}
+
 function sortMeasurements(a, b) {
     var dateA = a.timestamp;
     var dateB = b.timestamp;
@@ -63,9 +80,15 @@ const getColor = (function() {
 }());
 
 function generateAxis(axis) {
+    var minValue = !_.isNil(axis.minValue) ? axis.minValue : 'auto';
+    var maxValue = !_.isNil(axis.maxValue) ? axis.maxValue : 'auto';
     return (
         <YAxis 
+            label={axis.label}
             yAxisId={axis.id}
+            interval={0}
+            domain={[minValue, maxValue]}
+            tick={ <CustomizedYAxisTick pos={axis.id} unit={axis.unit}/> }
             key={`${axis.id}_axis`}
             orientation={axis.id} />
     );
@@ -89,11 +112,18 @@ function MeasurementGraph(props) {
     //TODO: handle degF, weird fucking americans
     var axes = [
         {
+            label: 'Temperature',
             id: 'left',
-            types: ['degC', 'degF']
+            unit: '°C',
+            minValue: 0,
+            maxValue: 'dataMax + 5',
+            types: ['degC']
         },
         {
+            label: 'Gravity',
             id: 'right',
+            minValue: 1000,
+            maxValue: 'dataMax + 10',
             types: ['gravity']
         }
     ];
@@ -105,6 +135,9 @@ function MeasurementGraph(props) {
             instrument.color = getColor();
         }
         var axis = _.find(axes, a => a.types.indexOf(instrument.type) > -1);
+        if (!axis) {
+            return null;
+        }
         instrument.axis = axis.id;
         return instrument;
     });
@@ -119,7 +152,7 @@ function MeasurementGraph(props) {
         (<Tooltip key='tooltip' labelFormatter={ formatDate } />),
         (<Legend key='legend' verticalAlign='top' />)]
         .concat(_.map(axes, generateAxis))
-        .concat(_.map(instruments, generateLine));
+        .concat(_.map(_.compact(instruments), generateLine));
 
 
     return (
