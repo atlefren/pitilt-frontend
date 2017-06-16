@@ -3,8 +3,6 @@ import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsiv
 import moment from 'moment';
 import _ from 'lodash';
 
-import Spinner from '../../../helpers/Spinner';
-
 const CustomizedAxisTick = React.createClass({
     render() {
         const {x, y, payload} = this.props;
@@ -66,88 +64,81 @@ const getColor = (function() {
     }
 }());
 
-function getAxes(instruments) {
-
-    return _.flatten(_.map(instruments, function (instrument, i) {
-        return [
-            (<YAxis 
-                yAxisId='left'
-                key={`${instrument.key}_axis`}
-                orientation='left' />),
-            (<Line type='linear'
-                dot={false}
-                isAnimationActive ={false}
-                key={`${instrument.key}_line`}
-                name={instrument.name}
-                yAxisId='left'
-                dataKey={instrument.key}
-                stroke={instrument.color} />)
-        ];
-    }));
+function generateAxis(axis) {
+    return (
+        <YAxis 
+            yAxisId={axis.id}
+            key={`${axis.id}_axis`}
+            orientation={axis.id} />
+    );
 }
 
-
-class MeasurementGraph extends React.Component {
-
-    render() {
-
-        var chartComponents = [
-
-            (<XAxis dataKey='timestamp'
-                   minTickGap={ 10 }
-                   key='XAxis'
-                   tick={ <CustomizedAxisTick/> }
-                   interval="preserveStartEnd" />),
-
-            (<CartesianGrid key='grid'
-                            strokeDasharray='3 3' />),
-            (<Tooltip key='tooltip'
-                      labelFormatter={ formatDate } />),
-            (<Legend key='legend'
-                     verticalAlign='top' />)
-        ].concat(getAxes(this.props.instruments));
-
-        const data = formatData(this.props.measurements);
-
-        return (
-            <div>
-                <ResponsiveContainer 
-                    width={ '100%' }
-                    height={ 500 }>
-                    <LineChart
-                        data={ data }
-                        margin={{top: 20, right: 30, left: 20, bottom: 50}}>
-                        {chartComponents}
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
-        );
-    }
+function generateLine(instrument) {
+    return (
+        <Line type='linear'
+            dot={false}
+            isAnimationActive={false}
+            key={`${instrument.key}_line`}
+            name={instrument.name}
+            yAxisId={instrument.axis}
+            dataKey={instrument.key}
+            stroke={instrument.color} />
+    );
 }
 
+function MeasurementGraphs2(props) {
 
-function MeasurementGraphs(props) {
+    //TODO: handle degF, weird fucking americans
+    var axes = [
+        {
+            id: 'left',
+            types: ['degC', 'degF']
+        },
+        {
+            id: 'right',
+            types: ['gravity']
+        }
+    ];
 
-    var measurements = props.measurements.sort(sortMeasurements);
-    var graphs = _.map(props.plot.instruments, function (instrument) {
+    const data = formatData(props.measurements.sort(sortMeasurements));
+
+    const instruments = _.map(props.plot.instruments, function (instrument) {
         if (!instrument.color) {
             instrument.color = getColor();
         }
-        return (
-            <div key={instrument.key} >
-                <h3>{instrument.name}</h3>
-                <MeasurementGraph instruments={[instrument]} measurements={measurements}/>
-            </div>
-        )
+        var axis = _.find(axes, a => a.types.indexOf(instrument.type) > -1);
+        instrument.axis = axis.id;
+        return instrument;
     });
+
+    const chartComponents = [
+        (<XAxis dataKey='timestamp'
+               minTickGap={ 10 }
+               key='XAxis'
+               tick={ <CustomizedAxisTick/> }
+               interval="preserveStartEnd" />),
+        (<CartesianGrid key='grid' strokeDasharray='3 3' />),
+        (<Tooltip key='tooltip' labelFormatter={ formatDate } />),
+        (<Legend key='legend' verticalAlign='top' />)]
+        .concat(_.map(axes, generateAxis))
+        .concat(_.map(instruments, generateLine));
+
 
     return (
         <div>
-            {graphs}
+            <ResponsiveContainer 
+                width={ '100%' }
+                height={ 500 }>
+                <LineChart
+                    data={data}
+                    margin={{top: 20, right: 30, left: 20, bottom: 50}}>
+                    {chartComponents}
+                </LineChart>
+            </ResponsiveContainer>
         </div>
     );
 }
 
-export default MeasurementGraphs;
+export default MeasurementGraphs2;
 
 

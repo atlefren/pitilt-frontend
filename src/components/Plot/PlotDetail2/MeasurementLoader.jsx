@@ -22,7 +22,7 @@ class MeasurementLoader extends React.Component {
                 });
             return;
         }
-
+        this.setState({measurements: null});
         getAllDataForPlot(this.props.plot.id, this.props.plotParams, function(err, data){
             if (!err) {
                 this.setState({
