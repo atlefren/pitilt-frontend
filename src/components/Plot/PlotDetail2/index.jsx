@@ -191,19 +191,24 @@ class PlotDetail2 extends React.Component {
         return (
             <div>
                 <h2>{this.state.plot.name}</h2>
-                <div>
-                    {dl('Last updated', formatDate(this.state.lastMeasurement.date))}
-                    {_.map(last, (m) => dl(`Current ${m.name}`, `${m.value}${!!m.instrumentType.symbol ? m.instrumentType.symbol : ''}`))}
+                <div className="row">
+                    <div className="col-md-5">
+                        {dl('Last updated', formatDate(this.state.lastMeasurement.date))}
+                        {_.map(last, (m) => dl(`Current ${m.name}`, `${m.value}${!!m.instrumentType.symbol ? m.instrumentType.symbol : ''}`))}
+                    </div>
+                    <div className="col-md-5">
+                        <Link className="btn btn-default" to={ `/plots/${this.props.match.params.plotId}/edit` }>Edit plot</Link>
+                    </div>
                 </div>
-                <div>
-                    <Link className="btn btn-primary" to={ `/plots/${this.props.match.params.plotId}/edit` }>Edit plot</Link>
-                </div>
+                <hr />
                 <ViewChooser
                     handleSelect={this._changeView}
                     selectedView={this.state.selectedView} />
+                <div style={{marginTop: "10px", marginBottom: "10px"}}>
                 <PeriodChooser 
                     handleSelect={this._calculatePeriod} 
                     selectedPeriod={this.state.timeSpan} />
+                </div>
                 {view}
             </div>
         );
