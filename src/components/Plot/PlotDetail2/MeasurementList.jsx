@@ -2,7 +2,6 @@ import React from 'react';
 import {Table} from 'react-bootstrap';
 import _ from 'lodash';
 
-import Spinner from '../../../helpers/Spinner';
 import formatDate from '../../../helpers/formatDate';
 
 

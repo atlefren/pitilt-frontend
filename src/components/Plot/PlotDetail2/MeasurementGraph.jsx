@@ -3,23 +3,21 @@ import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsiv
 import moment from 'moment';
 import _ from 'lodash';
 
-const CustomizedAxisTick = React.createClass({
-    render() {
-        const {x, y, payload} = this.props;
-        return (
-            <g transform={ `translate(${x},${y})` }>
-                <text x={ 0 }
-                      y={ 0 }
-                      dy={ 16 }
-                      textAnchor='end'
-                      fill='#666'
-                      transform='rotate(-35)'>
-                    { formatDate(payload.value) }
-                </text>
-            </g>
-        );
-    }
-});
+function CustomizedAxisTick(props) {
+    const {x, y, payload} = props;
+    return (
+        <g transform={ `translate(${x},${y})` }>
+            <text x={ 0 }
+                  y={ 0 }
+                  dy={ 16 }
+                  textAnchor='end'
+                  fill='#666'
+                  transform='rotate(-35)'>
+                { formatDate(payload.value) }
+            </text>
+        </g>
+    );
+}
 
 function sortMeasurements(a, b) {
     var dateA = a.timestamp;
@@ -86,7 +84,7 @@ function generateLine(instrument) {
     );
 }
 
-function MeasurementGraphs2(props) {
+function MeasurementGraph(props) {
 
     //TODO: handle degF, weird fucking americans
     var axes = [
@@ -139,6 +137,6 @@ function MeasurementGraphs2(props) {
     );
 }
 
-export default MeasurementGraphs2;
+export default MeasurementGraph;
 
 

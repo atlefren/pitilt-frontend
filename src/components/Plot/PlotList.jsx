@@ -7,16 +7,17 @@ import PlotCard from './PlotCard';
 import Spinner from '../../helpers/Spinner';
 
 
-var PlotList = React.createClass({
+class PlotList extends React.Component {
 
-    getInitialState: function () {
+     constructor() {
+        super();
 
-        return {
+        this.state = {
             plots: null
-        };
-    },
+        }
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
         getPlots(function (err, plots) {
             if (!err) {
                 this.setState({
@@ -24,9 +25,9 @@ var PlotList = React.createClass({
                 });
             }
         }.bind(this));
-    },
+    }
 
-    render: function () {
+    render() {
         if (this.state.plots === null) {
             return (
                 <Spinner />
@@ -56,7 +57,7 @@ var PlotList = React.createClass({
             </div>
         );
     }
-});
+}
 
 
 export default function PlotListContainer(props) {
