@@ -39,7 +39,7 @@ function sortMeasurements(a, b) {
 
 export default function MeasurementList(props) {
     var headers = props.plot.instruments.map(
-        instrument => 
+        instrument =>
         <th key={instrument.key}>{instrument.name}</th>
     );
     var measurements = props.measurements.sort(sortMeasurements);
@@ -52,11 +52,11 @@ export default function MeasurementList(props) {
                 </tr>
             </thead>
             <tbody>
-            {measurements.map(measurement => 
-                <DataRow 
-                    data={measurement} 
+            {measurements.map(measurement =>
+                <DataRow
+                    data={measurement}
                     instrumentTypes={props.instrumentTypes}
-                    instruments={props.plot.instruments} 
+                    instruments={props.plot.instruments}
                     key={measurement.date}/>
             )}
             </tbody>

@@ -11,12 +11,11 @@ import formatDate from '../../helpers/formatDate';
 
 
 
-class LastMeasurements extends React.Component{
-
-    state = {lastMeasurement: null}
+class LastMeasurements extends React.Component {
 
      constructor() {
         super();
+        this.state = {lastMeasurement: null};
         this._getLatest = this._getLatest.bind(this);
     }
 
@@ -33,7 +32,9 @@ class LastMeasurements extends React.Component{
 
     render() {
         if (!this.state.lastMeasurement) {
-            return <p>No measurements</p>
+            return (
+                <p>No measurements</p>
+            );
         }
         var measurements = _.map(this.state.lastMeasurement.values, (value, key) => dl(key, value));
         return (

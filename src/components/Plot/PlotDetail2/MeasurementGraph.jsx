@@ -27,8 +27,8 @@ function CustomizedYAxisTick(props) {
             <text x={ 0 }
                   y={ 0 }
                   dy={ 10 }
-                  dx={props.pos === 'left' ? -10: 10}
-                  textAnchor={props.pos === 'left' ? 'end': 'start'}
+                  dx={props.pos === 'left' ? -10 : 10}
+                  textAnchor={props.pos === 'left' ? 'end' : 'start'}
                   fill='#666'>
                 {`${payload.value}${unit}`}
             </text>
@@ -56,11 +56,11 @@ function formatData(measurements) {
     return _.map(measurements, function (measurement) {
         return _.assign({
             timestamp: measurement.date
-        }, measurement.values)
+        }, measurement.values);
     }).sort(sortMeasurements);
 }
 
-const getColor = (function() {
+const getColor = (function () {
 
     const colors = [
         '#e31a1c',
@@ -72,18 +72,18 @@ const getColor = (function() {
         '#fdbf6f',
         '#b2df8a',
         '#cab2d6'
-    ]
+    ];
 
     return function () {
         return colors.shift();
-    }
+    };
 }());
 
 function generateAxis(axis) {
     var minValue = !_.isNil(axis.minValue) ? axis.minValue : 'auto';
     var maxValue = !_.isNil(axis.maxValue) ? axis.maxValue : 'auto';
     return (
-        <YAxis 
+        <YAxis
             label={axis.label}
             yAxisId={axis.id}
             interval={0}
@@ -157,7 +157,7 @@ function MeasurementGraph(props) {
 
     return (
         <div>
-            <ResponsiveContainer 
+            <ResponsiveContainer
                 width={ '100%' }
                 height={ 500 }>
                 <LineChart

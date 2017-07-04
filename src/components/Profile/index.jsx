@@ -4,20 +4,20 @@ import Spinner from '../../helpers/Spinner';
 
 class ProfilePage extends React.Component {
 
-    state={loading: true}
+    state = {loading: true}
 
     componentDidMount() {
         getKey(function (err, data) {
             this.setState({
                 loading: false,
                 apikey: data.key
-            })
+            });
         }.bind(this));
     }
 
     render() {
         if (this.state.loading) {
-            return <Spinner />
+            return <Spinner />;
         }
         return (
             <div>

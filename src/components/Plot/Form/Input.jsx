@@ -2,7 +2,7 @@ import React from 'react';
 
 import {FormControl} from 'react-bootstrap';
 
-export default function  Input(props) {
+export default function Input(props) {
 
     var onChange = function (e) {
         const value = e.target.value;

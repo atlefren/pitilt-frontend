@@ -12,12 +12,12 @@ class EditPlot extends React.Component {
 
         this.state = {
             plot: null
-        }
+        };
     }
 
     componentDidMount() {
         var plotId = this.props.match.params.plotId;
-        getPlot(plotId, function(err, plot){
+        getPlot(plotId, function (err, plot) {
             if (!err) {
                 this.setState({
                     plot: plot,
@@ -32,7 +32,7 @@ class EditPlot extends React.Component {
             return <Spinner />;
         }
         var plot = this.state.plot;
-        plot.startTime = moment(plot.startTime, "YYYY-MM-DDTHH:mm:ssZ");
+        plot.startTime = moment(plot.startTime, 'YYYY-MM-DDTHH:mm:ssZ');
         return (
             <PlotSave
                 legend={`Edit ${this.state.plot.name}`}

@@ -22,7 +22,7 @@ export default function FormElement(props) {
         );
     }
     return (
-        
+
         <FormGroup
             validationState={props.hasError ? 'error': null}
             controlId={props.element.key}>
@@ -36,7 +36,7 @@ export default function FormElement(props) {
                 {helpBlock}
             </Col>
         </FormGroup>
-       
+
     );
 }
 

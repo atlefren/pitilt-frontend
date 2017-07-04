@@ -4,7 +4,7 @@ import moment from 'moment';
 import {addPlot} from '../../api';
 import PlotSave from './PlotSave';
 
-export default function CreatePlot(props) {
+export default function CreatePlot() {
     var emptyPlot = {
         name: null,
         startTime: moment().startOf('hour'),

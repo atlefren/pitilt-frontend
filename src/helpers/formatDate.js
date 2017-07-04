@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default function formatDate(d, format='DD.MM HH:mm:ss') {
+export default function formatDate(d, format = 'DD.MM HH:mm:ss') {
     if (!d) {
         return '';
     }

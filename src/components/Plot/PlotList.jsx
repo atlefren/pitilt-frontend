@@ -14,7 +14,7 @@ class PlotList extends React.Component {
 
         this.state = {
             plots: null
-        }
+        };
     }
 
     componentDidMount() {
@@ -66,7 +66,7 @@ export default function PlotListContainer(props) {
             <PlotList {...props} />
             <hr />
             <div>
-                <Link className="btn btn-primary" to={ `/plots/new` }>Create New Plot</Link>
+                <Link className="btn btn-primary" to={'/plots/new'}>Create New Plot</Link>
             </div>
         </div>
     );

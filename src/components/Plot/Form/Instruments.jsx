@@ -11,7 +11,7 @@ var stamp = (function () {
             counter++;
         }
         return element;
-    }
+    };
 }());
 
 function Instrument(props) {
@@ -31,8 +31,8 @@ function Instrument(props) {
             <td>{props.instrument.name}</td>
             <td>{instrumentType.name}</td>
             <td>
-                <Button bsSize="small" 
-                    bsStyle="warning" 
+                <Button bsSize="small"
+                    bsStyle="warning"
                     onClick={remove}>
                     <Glyphicon glyph="minus" />
                 </Button>
@@ -78,7 +78,7 @@ class InstrumentAdd extends React.Component {
                         value={this.state.type}
                         placeholder="select type">
                         <option value="">...</option>
-                        {this.props.instrumentTypes.map(instrumentType => 
+                        {this.props.instrumentTypes.map(instrumentType =>
                             <option value={instrumentType.key} key={instrumentType.key}>
                                 {instrumentType.name}
                             </option>
@@ -86,9 +86,9 @@ class InstrumentAdd extends React.Component {
                     </FormControl>
                 </td>
                 <td>
-                    <Button bsSize="small" 
+                    <Button bsSize="small"
                         disabled={!enabled}
-                        bsStyle="primary" 
+                        bsStyle="primary"
                         onClick={this._add}>
                         <Glyphicon glyph="plus" />
                     </Button>
@@ -123,7 +123,7 @@ export default function Instruments(props) {
         props.onChange(props.element.key, value);
     }
 
-    const rows = props.value.map(instrument => 
+    const rows = props.value.map(instrument =>
         <Instrument instrument={stamp(instrument)}
             onRemove={onRemove}
             instrumentTypes={instrumentTypes}
@@ -145,5 +145,5 @@ export default function Instruments(props) {
                 <InstrumentAdd onAdd={onAdd} instrumentTypes={instrumentTypes}/>
             </tbody>
         </Table>
-    );  
+    );
 }

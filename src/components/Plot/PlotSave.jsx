@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import {Form, Button} from 'react-bootstrap';
-import {Redirect} from 'react-router-dom'
+import {Redirect} from 'react-router-dom';
 
 import FormElement from './Form/FormElement';
 import {getInstrumentTypes} from '../../api';
@@ -10,9 +10,9 @@ import Spinner from '../../helpers/Spinner';
 
 const formatters = {
     datetime: function (value) {
-        return value !== null && value !== '' ? moment(value).format("YYYY-MM-DDTHH:mm:ssZ") : null;
+        return value !== null && value !== '' ? moment(value).format('YYYY-MM-DDTHH:mm:ssZ') : null;
     }
-}
+};
 
 const validators = {
     text: function (value) {
@@ -24,30 +24,30 @@ const validators = {
     instruments: function (value) {
         return value.length > 0;
     }
-}
+};
 
 const elements = [
     {
-        key: 'name', 
+        key: 'name',
         title: 'Plot Name',
         type: 'text',
         required: true,
         error: 'Set a non-blank name'
     },
     {
-        key: 'startTime', 
+        key: 'startTime',
         title: 'Starts at',
         type: 'datetime',
         required: true,
         error: 'Set the start-time'
     },
     {
-        key: 'endTime', 
-        title: 'Ends at', 
+        key: 'endTime',
+        title: 'Ends at',
         type: 'datetime'
     },
     {
-        key: 'instruments', 
+        key: 'instruments',
         title: 'Instruments',
         type: 'instruments',
         required: true,
@@ -78,14 +78,13 @@ class PlotSave extends React.Component {
         this.state = {
             loading: true,
             saving: false,
-            
             errors: []
-        }
+        };
     }
 
     componentDidMount() {
         this.setState({plot: this.props.plot});
-        getInstrumentTypes(function(err, instruments){
+        getInstrumentTypes(function (err, instruments) {
             if (!err) {
                 this._gotData({instruments: instruments});
             }
@@ -95,7 +94,9 @@ class PlotSave extends React.Component {
     render() {
 
         if (this.state.savedPlot) {
-            return <Redirect to={`/plots/${this.state.savedPlot.id}`} />
+            return (
+                <Redirect to={`/plots/${this.state.savedPlot.id}`} />
+            );
         }
 
         if (this.state.loading) {
