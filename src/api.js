@@ -41,13 +41,9 @@ function getLatest(plotId, cb) {
     sendRequest('GET', `/plots/${plotId}/data/latest/`, null, cb);
 }
 
-function getAllDataForPlot(plotId, params, cb) {
-    const url = `/plots/${plotId}/data/all/?${getQueryParams(params)}`;
+function getDataForPlot(plotId, params, cb) {
+    const url = `/plots/${plotId}/data/?${getQueryParams(params)}`;
     sendRequest('GET', url, null, cb);
-}
-
-function getHourlyDataForPlot(plotId, cb) {
-    sendRequest('GET', `/plots/${plotId}/data/hourly/`, null, cb);
 }
 
 function getPlot(plotId, cb) {
@@ -93,8 +89,7 @@ export {
     addPlot,
     editPlot,
     getLatest,
-    getAllDataForPlot,
-    getHourlyDataForPlot,
+    getDataForPlot,
     getInstrumentTypes,
     getKey,
     getMeasurementsSince

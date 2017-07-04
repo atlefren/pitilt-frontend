@@ -20,7 +20,7 @@ function mergeData(measurement, instruments, instrumentTypes) {
             name: instrument.name,
             value: measurement.values[instrument.key],
             instrumentType: instrumentType
-        }
+        };
     });
 }
 
@@ -37,9 +37,9 @@ function ViewChooser(props) {
 function PeriodChooser(props) {
     return (
         <Nav bsStyle="pills" activeKey={props.selectedPeriod} onSelect={props.handleSelect}>
-            <NavItem eventKey="day">Last Day</NavItem>
-            <NavItem eventKey="week">Last Week</NavItem>
-            <NavItem eventKey="all">All Measurements</NavItem>
+            <NavItem eventKey="day">Last 24 hours</NavItem>
+            <NavItem eventKey="week">Last 7 days</NavItem>
+            <NavItem eventKey="all">Whole period</NavItem>
         </Nav>
     );
 }
@@ -48,7 +48,7 @@ const resolutions = {
     'day': 'minute',
     'week': 'hour',
     'all': 'day'
-}
+};
 
 
 class PlotDetail2 extends React.Component {
@@ -64,7 +64,7 @@ class PlotDetail2 extends React.Component {
             lastMeasurement: null,
             noMeasurements: false,
             selectedView: 'graph'
-        }
+        };
     }
 
     componentWillUnmount() {
@@ -75,7 +75,7 @@ class PlotDetail2 extends React.Component {
         var plotId = this.props.match.params.plotId;
         this.setState({numWaiting: 3});
 
-        getLatest(plotId, function(err, data){
+        getLatest(plotId, function (err, data) {
 
             if (err) {
                 this.setState({noMeasurements: true});
@@ -89,7 +89,7 @@ class PlotDetail2 extends React.Component {
 
         }.bind(this));
 
-        getInstrumentTypes(function(err, data){
+        getInstrumentTypes(function (err, data) {
             if (!err) {
                 this.setState({
                     numWaiting: this.state.numWaiting - 1,
@@ -98,7 +98,7 @@ class PlotDetail2 extends React.Component {
             }
         }.bind(this));
 
-        getPlot(plotId, function(err, plot){
+        getPlot(plotId, function (err, plot) {
             if (!err) {
                 this.setState({
                     numWaiting: this.state.numWaiting - 1,
@@ -131,14 +131,17 @@ class PlotDetail2 extends React.Component {
 
     _getPlotParams(start, end, timeSpan) {
 
-        if (timeSpan !== 'all') {
-            start = moment(end).startOf(timeSpan);
+        if (timeSpan === 'day') {
+            start = moment(end).subtract(24, 'hours');
+        }
+        if (timeSpan === 'week') {
+            start = moment(end).subtract(7, 'days');
         }
 
         return {
             resolution: resolutions[timeSpan],
-            start: moment(start).format("YYYY-MM-DDTHH:mm:ssZ"),
-            end: moment(end).format("YYYY-MM-DDTHH:mm:ssZ")
+            start: moment(start).format('YYYY-MM-DDTHH:mm:ssZ'),
+            end: moment(end).format('YYYY-MM-DDTHH:mm:ssZ')
         };
     }
 
@@ -148,7 +151,7 @@ class PlotDetail2 extends React.Component {
                 this.setState({
                     lastMeasurement: measurements[0],
                     measurements: measurements.concat(this.state.measurements)
-                })
+                });
             }.bind(this));
         }
     }
@@ -165,10 +168,10 @@ class PlotDetail2 extends React.Component {
             );
         }
 
-        var view; 
+        var view;
         if (this.state.selectedView === 'graph') {
             view = (
-                <MeasurementLoader 
+                <MeasurementLoader
                     instrumentTypes={this.state.instrumentTypes}
                     plotParams={this.state.plotParams}
                     plot={this.state.plot}>
@@ -178,7 +181,7 @@ class PlotDetail2 extends React.Component {
         }
         if (this.state.selectedView === 'list') {
             view = (
-                <MeasurementLoader 
+                <MeasurementLoader
                     instrumentTypes={this.state.instrumentTypes}
                     plotParams={this.state.plotParams}
                     plot={this.state.plot}>
@@ -187,7 +190,7 @@ class PlotDetail2 extends React.Component {
             );
         }
 
-        var last = mergeData(this.state.lastMeasurement, this.state.plot.instruments, this.state.instrumentTypes)
+        var last = mergeData(this.state.lastMeasurement, this.state.plot.instruments, this.state.instrumentTypes);
         return (
             <div>
                 <h2>{this.state.plot.name}</h2>
@@ -197,16 +200,20 @@ class PlotDetail2 extends React.Component {
                         {_.map(last, (m) => dl(`Current ${m.name}`, `${m.value}${!!m.instrumentType.symbol ? m.instrumentType.symbol : ''}`))}
                     </div>
                     <div className="col-md-5">
-                        <Link className="btn btn-default" to={ `/plots/${this.props.match.params.plotId}/edit` }>Edit plot</Link>
+                        <Link
+                            className="btn btn-default"
+                            to={ `/plots/${this.props.match.params.plotId}/edit` }>
+                            Edit plot
+                        </Link>
                     </div>
                 </div>
                 <hr />
                 <ViewChooser
                     handleSelect={this._changeView}
                     selectedView={this.state.selectedView} />
-                <div style={{marginTop: "10px", marginBottom: "10px"}}>
-                <PeriodChooser 
-                    handleSelect={this._calculatePeriod} 
+                <div style={{marginTop: '10px', marginBottom: '10px'}}>
+                <PeriodChooser
+                    handleSelect={this._calculatePeriod}
                     selectedPeriod={this.state.timeSpan} />
                 </div>
                 {view}
